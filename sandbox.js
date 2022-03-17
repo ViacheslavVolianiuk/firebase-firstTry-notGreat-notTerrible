@@ -1,6 +1,7 @@
 const list = document.querySelector(".recipes");
 const btn = document.querySelector(".btn-outline-secondary");
 const form = document.querySelector("form");
+const button = document.querySelector("button");
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -42,7 +43,7 @@ const deleteRecipe = (id) => {
   });
 };
 //get documents
-db.collection("recipes").onSnapshot((snapshot) => {
+const unsub = db.collection("recipes").onSnapshot((snapshot) => {
   snapshot.docChanges().forEach((change) => {
     const doc = change.doc;
     if (change.type === "added") {
@@ -63,4 +64,9 @@ list.addEventListener("click", (e) => {
         console.log("recepi deleted");
       });
   }
+});
+
+//unsub from database changes
+button.addEventListener("click", () => {
+  unsub();
 });
